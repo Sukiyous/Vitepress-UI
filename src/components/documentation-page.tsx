@@ -15,7 +15,7 @@ export const DocumentationPage = ({ activeItem }) => {
   return (
     <div className="py-8 px-4 md:px-8 max-w-none mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start gap-8">
-        <div className="flex-1 max-w-none mx-auto md:mx-0 md:pr-72 lg:pr-80">
+        <div className="flex-1 max-w-none mx-auto md:mx-0 md:pr-0 lg:pr-64 xl:pr-72">
           <h1 className="text-3xl font-bold mb-4">Markdown 扩展</h1>
           <p className="text-gray-600 dark:text-zinc-400 mb-8">VitePress 带有内置的 Markdown 扩展。</p>
           
@@ -74,9 +74,9 @@ export const DocumentationPage = ({ activeItem }) => {
           </div>
         </div>
         
-        <div className="w-full md:w-64 md:flex-shrink-0 md:fixed md:right-4 lg:right-8 xl:right-16 2xl:right-32 md:top-20">
-          <div className="pt-4">
-            <div className="border-l border-gray-200 dark:border-zinc-800 pl-4 relative z-10">
+        <div className="w-full md:w-64 md:flex-shrink-0 md:sticky md:top-20 md:mt-0 mt-8 border-t md:border-t-0 pt-4 md:pt-0">
+          <div className="md:pt-4">
+            <div className="md:border-l border-gray-200 dark:border-zinc-800 md:pl-4 relative z-10">
               <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-zinc-400 mb-4">页面导航</h3>
               <ul className="space-y-3">
                 <li>
@@ -105,7 +105,7 @@ const WhatIsVitePress = () => {
   return (
     <div className="py-8 px-4 md:px-8 max-w-none mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start gap-8">
-        <div className="flex-1 max-w-none mx-auto md:mx-0 md:pr-72 lg:pr-80">
+        <div className="flex-1 max-w-none mx-auto md:mx-0 md:pr-0 lg:pr-64 xl:pr-72">
           <h1 className="text-3xl font-bold mb-4">什么是 VitePress?</h1>
           <p className="text-gray-600 dark:text-zinc-400 mb-8">
             VitePress 是一个静态站点生成器（SSG），专为构建快速、以内容为中心的网站而设计。
@@ -194,9 +194,9 @@ const WhatIsVitePress = () => {
           </div>
         </div>
         
-        <div className="w-full md:w-64 md:flex-shrink-0 md:fixed md:right-4 lg:right-8 xl:right-16 2xl:right-32 md:top-20">
-          <div className="pt-4">
-            <div className="border-l border-gray-200 dark:border-zinc-800 pl-4 relative z-10">
+        <div className="w-full md:w-64 md:flex-shrink-0 md:sticky md:top-20 md:mt-0 mt-8 border-t md:border-t-0 pt-4 md:pt-0">
+          <div className="md:pt-4">
+            <div className="md:border-l border-gray-200 dark:border-zinc-800 md:pl-4 relative z-10">
               <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-zinc-400 mb-4">页面导航</h3>
               <ul className="space-y-3">
                 <li>
