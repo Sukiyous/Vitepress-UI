@@ -12,32 +12,29 @@ jobs:
       contents: write
     steps:
       - name: 检出代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: 设置Node环境
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
+          cache-dependency-path: 'vitepress-project/package.json'
       
       - name: 安装依赖并构建
         env:
           NODE_ENV: production
-          NODE_OPTIONS: --openssl-legacy-provider
         run: |
           cd vitepress-project
           npm ci
           echo "Node版本: $(node -v)"
           echo "NPM版本: $(npm -v)"
+          # 确保安装所有必要的polyfill依赖
+          npm install buffer crypto-browserify events stream-browserify util vite-plugin-node-polyfills
           npm run docs:build
       
       - name: 部署到GitHub Pages
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan gh-pages
-          git reset --hard
-          cp -r vitepress-project/docs/.vitepress/dist/* .
-          ls -la
-          git add .
-          git commit -m "部署网站 $(date)" || echo "没有变化，跳过提交"
-          git push -f origin gh-pages || echo "推送失败，但继续执行" 
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          folder: vitepress-project/docs/.vitepress/dist
+          branch: gh-pages 
