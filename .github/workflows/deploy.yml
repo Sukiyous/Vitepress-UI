@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy VitePress to GitHub Pages
 
 on:
   push:
@@ -22,18 +22,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
+      
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'npm'
+      
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          cd vitepress-project
+          npm ci
+      
       - name: Build
-        run: npm run build
+        run: |
+          cd vitepress-project
+          npm run docs:build
+      
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist
+          folder: vitepress-project/docs/.vitepress/dist
           branch: gh-pages 
