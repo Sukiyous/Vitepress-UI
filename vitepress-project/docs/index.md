@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: VitePress
-  text: 由 Vite 和 Vue 驱动的静态站点生成器
-  tagline: 简单、强大且高性能的现代化文档构建工具
+  name: 云药家
+  text: 简单的知识分享
+  tagline: 简单、强大且高性能的现代化文档
   image:
     src: /logo.svg
     alt: VitePress

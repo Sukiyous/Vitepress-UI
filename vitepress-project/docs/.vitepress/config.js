@@ -1,5 +1,5 @@
 export default {
-  title: 'VitePress',
+  title: '云药家',
   description: 'VitePress 文档站点',
   // 添加基础路径配置，适配GitHub Pages
   base: '/Vitepress-UI/',
@@ -48,22 +48,16 @@ export default {
       prev: false,
       next: false
     },
-    // 恢复导航栏
+    // 修改导航栏，只保留"指南"
     nav: [
-      { text: '指南', link: '/introduction/' },
-      { text: '编写', link: '/writing/markdown' },
-      { text: '参考', link: '/reference/' },
-      {
-        text: '2.0.0-alpha.5',
-        items: [
-          { text: '2.0.0-alpha.5', link: '#' },
-          { text: '1.0.0', link: '#' },
-        ]
-      }
+      { text: '操作指南', link: '/introduction/' },
+      
+      { text: '疑难报错', link: '/Problem/' },
+      
     ],
-    // 恢复侧边栏
+    // 重新组织侧边栏，将"编写"和"参考"包含在主侧边栏中
     sidebar: {
-      '/introduction/': [
+      '/': [
         {
           text: '介绍',
           items: [
@@ -71,18 +65,23 @@ export default {
             { text: '为什么选择VitePress', link: '/introduction/why-vitepress' },
             { text: '快速开始', link: '/introduction/getting-started' },
           ]
-        }
-      ],
-      '/writing/': [
+        },
+        {
+          text: '基础档案',
+          items: [
+            { text: '商品管理', link: '/BaseArchice/' },
+            { text: '档案A', link: '/BaseArchice/PriceTZ' },
+            { text: '档案B', link: '/BaseArchice/ProdtManagement' },
+          ]
+        },
+
         {
           text: '编写',
           items: [
             { text: 'Markdown', link: '/writing/markdown' },
             { text: '资源处理', link: '/writing/asset-handling' },
           ]
-        }
-      ],
-      '/reference/': [
+        },
         {
           text: 'API参考',
           items: [
@@ -98,8 +97,8 @@ export default {
     ],
     // 页脚
     footer: {
-      message: '基于 MIT 许可发布',
-      copyright: 'Copyright © 2019-present Evan You'
+      message: '基于 Djc 许可发布',
+      copyright: 'Copyright © 2025-present Evan You'
     },
     // 启用搜索
     search: {
