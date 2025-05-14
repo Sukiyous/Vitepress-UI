@@ -7,7 +7,7 @@ on:
 
 # 设置GITHUB_TOKEN的权限
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -16,9 +16,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
-# 单个部署作业，因为我们只是部署
 jobs:
-  build-and-deploy:
+  # 构建工作
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,6 +29,14 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: './vitepress-project/package-lock.json'
+      
+      - name: List Project Structure
+        run: |
+          echo "Project structure:"
+          ls -la
+          echo "VitePress project structure:"
+          ls -la vitepress-project
       
       - name: Install Dependencies
         run: |
@@ -40,8 +48,24 @@ jobs:
           cd vitepress-project
           npm run docs:build
       
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Check Build Output
+        run: |
+          echo "Checking build output..."
+          ls -la vitepress-project/docs/.vitepress/dist
+      
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          folder: vitepress-project/docs/.vitepress/dist
-          branch: gh-pages 
+          path: vitepress-project/docs/.vitepress/dist
+
+  # 部署工作
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1 
