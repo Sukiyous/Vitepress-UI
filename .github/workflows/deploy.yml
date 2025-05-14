@@ -1,46 +1,37 @@
-name: Deploy to GitHub Pages
+name: 手动部署到GitHub Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v1
+      - name: 检出代码
+        uses: actions/checkout@v3
       
-      - name: Setup Node
-        uses: actions/setup-node@v1
+      - name: 设置Node环境
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
       
-      - name: Debug Info
-        run: |
-          echo "Node version:"
-          node -v
-          echo "NPM version:"
-          npm -v
-          echo "Directory structure:"
-          ls -la
-          echo "VitePress project structure:"
-          ls -la vitepress-project
-      
-      - name: Install and Build 🔧
+      - name: 安装依赖并构建
         run: |
           cd vitepress-project
           npm ci
           npm run docs:build
-          echo "Build output:"
-          ls -la docs/.vitepress/dist
-
-      - name: Deploy 🚀
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./vitepress-project/docs/.vitepress/dist 
+      
+      - name: 部署到GitHub Pages
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan gh-pages
+          git reset --hard
+          cp -r vitepress-project/docs/.vitepress/dist/* .
+          git add .
+          git commit -m "部署网站 $(date)" || echo "没有变化，跳过提交"
+          git push -f origin gh-pages || echo "推送失败，但继续执行" 
