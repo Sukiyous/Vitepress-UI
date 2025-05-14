@@ -1,6 +1,6 @@
 # VitePress UI项目
 
-这是一个基于VitePress的文档站点项目，使用TailwindCSS进行样式设计。该项目由原React UI克隆项目迁移而来，保持了相同的视觉风格，同时获得了VitePress的内容管理优势。
+这是一个基于VitePress的文档站点项目，使用TailwindCSS进行样式设计。该项目完全基于VitePress实现，保持了优雅的视觉风格，同时获得了VitePress的内容管理优势。
 
 ## 项目结构
 
@@ -9,20 +9,24 @@ vitepress-project/         # VitePress项目目录
 ├── docs/                  # 文档内容目录
 │   ├── .vitepress/        # VitePress配置目录
 │   │   ├── theme/         # 自定义主题
+│   │   │   ├── components/ # 自定义组件
+│   │   │   └── styles/    # 样式文件
 │   │   └── config.js      # VitePress配置文件
 │   ├── introduction/      # 介绍文档
 │   ├── writing/           # 编写指南
+│   ├── reference/         # API参考文档
 │   └── public/            # 公共资源
 └── package.json           # 项目依赖
 ```
 
 ## 功能特性
 
-- 美观的UI设计，与原React克隆版视觉效果相似
+- 美观的UI设计，基于TailwindCSS实现
 - 基于Markdown的内容管理
 - 支持明亮/暗黑主题切换
 - 响应式布局，适配各种设备尺寸
 - 自定义组件和样式
+- 文档目录结构清晰，易于扩展
 
 ## 快速开始
 
@@ -39,35 +43,30 @@ npm install
 npm run docs:dev
 ```
 
-或者，从项目根目录启动:
-
-```bash
-npm run dev
-```
-
 构建项目:
 
 ```bash
-npm run build
+npm run docs:build
 ```
 
-## 注意
+预览构建结果:
 
-这个项目是从React UI克隆迁移而来，保留了旧项目的视觉设计，但完全重构为VitePress项目。旧项目的文件已经备份到`old-react-ui`目录中。
+```bash
+npm run docs:preview
+```
 
 ## 技术栈
 
-- [React](https://reactjs.org/) - UI 构建库
+- [VitePress](https://vitepress.dev/) - Vue驱动的静态站点生成器
+- [Vue.js](https://vuejs.org/) - 渐进式JavaScript框架
 - [Vite](https://vitejs.dev/) - 现代前端构建工具
-- [TypeScript](https://www.typescriptlang.org/) - 类型安全
-- [Tailwind CSS](https://tailwindcss.com/) - 样式解决方案
-- [HeroUI](https://heroui.com/) - UI 组件库
-- [Framer Motion](https://www.framer.com/motion/) - 动画库
+- [TailwindCSS](https://tailwindcss.com/) - 实用优先的CSS框架
+- [Iconify](https://iconify.design/) - 图标系统
 
 ## 参考资源
 
-- [VitePress 官方网站](https://vitepress.dev/)
+- [VitePress 官方文档](https://vitepress.dev/)
 - [Tailwind CSS 文档](https://tailwindcss.com/docs)
-- [Vite 指南](https://vitejs.dev/guide/)
+- [Vue.js 指南](https://cn.vuejs.org/guide/introduction.html)
 
 version-1.0# Vitepress-UI
