@@ -1,6 +1,8 @@
 export default {
   title: 'VitePress',
   description: 'VitePress 文档站点',
+  // 添加基础路径配置，适配GitHub Pages
+  base: '/Vitepress-UI/',
   // Markdown配置
   markdown: {
     lineNumbers: true,
