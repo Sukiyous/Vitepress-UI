@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# VitePress UI 项目结构
+
+这是一个从React UI克隆迁移到VitePress的项目，主要工作目录是`vitepress-project`。
+
+## 关键目录结构
+
+- `vitepress-project/` - 主项目目录
+  - `docs/` - 所有文档内容和配置
+    - `.vitepress/` - VitePress配置和自定义主题
+    - `introduction/` - 介绍文档
+    - `writing/` - 编写指南文档
+    - `public/` - 静态资源文件
+
+根目录的`package.json`[package.json](mdc:package.json)提供了便捷脚本来运行VitePress项目。
+
+## 项目运行方式
+
+从根目录运行：
+- `npm run dev` - 启动开发服务器
+- `npm run build` - 构建站点
+- `npm run preview` - 预览构建后的站点
+

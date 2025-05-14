@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# React到VitePress迁移指南
+
+本项目是一个从React UI克隆迁移到VitePress的实例。迁移过程保留了原UI的视觉风格，同时利用了VitePress的内容管理优势。
+
+## 迁移要点
+
+1. **组件转换**：将React组件转换为Vue组件
+   - 使用Vue的`<script setup>`代替React的hooks
+   - 使用Vue的`ref`和`computed`代替React的`useState`和`useEffect`
+   - 使用Vue的事件处理方式（`@click`）代替React的处理方式（`onClick`）
+
+2. **样式处理**：
+   - 保留TailwindCSS类名
+   - 添加`preflight.css`解决样式冲突
+   - 使用`:deep()`选择器处理Vue组件样式穿透
+
+3. **内容管理**：
+   - 将硬编码内容转移到Markdown文件
+   - 使用VitePress的`Content`组件渲染Markdown内容
+   - 通过`useRoute`和`useData`处理路由和数据
+
+## 迁移后优势
+
+- 内容与样式分离，更易于维护
+- 利用VitePress的静态生成能力，提升性能
+- 保留原有视觉风格，获得更好的内容管理体验
+
+原React UI克隆代码已备份在`old-react-ui`目录中，可供参考。
+

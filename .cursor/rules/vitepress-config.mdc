@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# VitePress 配置和主题
+
+VitePress项目的配置和自定义主题位于`vitepress-project/docs/.vitepress/`目录。
+
+## 关键配置文件
+
+- `config.js` - VitePress主配置文件，配置站点标题、描述及禁用默认主题组件
+- `theme/index.js` - 自定义主题入口文件，完全替代VitePress默认主题
+- `theme/Layout.vue` - 自定义布局组件，根据路由条件显示不同内容
+- `theme/styles/` - 样式文件目录
+  - `tailwind.css` - TailwindCSS引入
+  - `custom.css` - 自定义样式和默认主题覆盖
+  - `preflight.css` - TailwindCSS预处理样式文件
+
+## 自定义组件
+
+- `theme/components/` - 自定义组件目录
+  - `Header.vue` - 顶部导航栏组件
+  - `Hero.vue` - 首页Hero区域组件
+  - `Features.vue` - 特性展示组件
+  - `Sidebar.vue` - 侧边栏导航组件
+  - `ThemeSwitch.vue` - 主题切换组件
+
+这些组件完全重构了React组件到Vue组件，并保持了相同的视觉风格。
+

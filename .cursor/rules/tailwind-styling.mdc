@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# TailwindCSS样式与主题
+
+本项目使用TailwindCSS作为样式解决方案，在VitePress中集成了TailwindCSS。
+
+## 关键样式文件
+
+- `vitepress-project/tailwind.config.js` - TailwindCSS配置，定义内容路径和颜色扩展
+- `vitepress-project/postcss.config.js` - PostCSS配置，集成TailwindCSS和Autoprefixer
+- `vitepress-project/docs/.vitepress/theme/styles/` - 样式文件目录
+  - `tailwind.css` - 引入TailwindCSS基础样式
+  - `preflight.css` - TailwindCSS预处理样式，解决与VitePress冲突
+  - `custom.css` - 自定义样式，覆盖VitePress默认样式
+
+## 样式组织原则
+
+1. **样式隔离**：
+   - 使用`:deep()`选择器处理组件样式穿透
+   - 使用`scoped`属性限制样式作用域
+
+2. **主题切换**：
+   - 使用TailwindCSS的暗色模式支持（`dark:`类前缀）
+   - 通过`isDark`状态控制主题切换
+
+3. **响应式设计**：
+   - 使用TailwindCSS响应式前缀：`sm:`, `md:`, `lg:`, `xl:`
+   - 移动端优先的设计方法
+
+样式设计保持与原React UI克隆项目一致，使用相同的TailwindCSS类名，确保视觉风格一致。
+

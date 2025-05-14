@@ -1,0 +1,139 @@
+:root {
+  --vp-c-brand: #646cff;
+  --vp-c-brand-light: #747bff;
+  --vp-c-brand-dark: #5460fe;
+}
+
+/* 暗色模式 */
+.dark {
+  --vp-c-bg: #1e1e20;
+  --vp-c-bg-soft: #2c2c30;
+  --vp-c-bg-mute: #313136;
+  --vp-c-divider: #3f3f44;
+  --vp-c-text: #dddde3;
+}
+
+/* 恢复VitePress默认样式 */
+/* 移除了隐藏导航栏的样式规则 */
+
+.VPContent {
+  /* 恢复合适的顶部内边距以容纳导航栏 */
+  padding-top: var(--vp-nav-height) !important;
+}
+
+.VPDoc {
+  /* 恢复文档内容的内边距 */
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
+
+.VPDoc .container {
+  /* 恢复合适的容器样式 */
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+}
+
+/* 自定义内容容器 */
+.content-container {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+}
+
+@media (min-width: 1440px) {
+  .content-container {
+    max-width: 1440px;
+  }
+}
+
+/* 主页样式定制 */
+.home-container {
+  padding: 64px 24px;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.features-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  padding: 24px;
+  background-color: var(--vp-c-bg-soft);
+  border-radius: 8px;
+}
+
+/* 自定义样式覆盖 */
+.VPNavBar {
+  @apply border-b border-gray-200 dark:border-zinc-800;
+}
+
+.VPNavBar .container {
+  @apply max-w-none mx-0 px-0;
+}
+
+/* 其他自定义样式可以根据需要继续添加 */
+
+/* 在TailwindCSS和VitePress样式之间建立兼容性 */
+.vp-doc [class~="lead"] {
+  @apply text-xl text-gray-500 dark:text-gray-400;
+}
+
+.vp-doc a {
+  @apply text-indigo-600 dark:text-indigo-400 font-medium;
+}
+
+.vp-doc strong {
+  @apply font-semibold text-gray-900 dark:text-white;
+}
+
+.vp-doc ol > li::before {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+.vp-doc ul > li::before {
+  @apply bg-gray-500 dark:bg-gray-400;
+}
+
+.vp-doc hr {
+  @apply border-gray-200 dark:border-gray-800;
+}
+
+.vp-doc blockquote {
+  @apply border-l-4 border-gray-200 dark:border-gray-800 pl-4 text-gray-600 dark:text-gray-300;
+}
+
+.vp-doc h1 {
+  @apply text-3xl font-bold tracking-tight text-gray-900 dark:text-white;
+}
+
+.vp-doc h2 {
+  @apply text-2xl font-semibold tracking-tight text-gray-900 dark:text-white mt-10;
+}
+
+.vp-doc h3 {
+  @apply text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-6;
+}
+
+.vp-doc h4 {
+  @apply text-lg font-semibold tracking-tight text-gray-900 dark:text-white mt-4;
+}
+
+.vp-doc code {
+  @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm;
+}
+
+.vp-doc pre {
+  @apply bg-gray-100 dark:bg-gray-800 rounded-md p-4 overflow-x-auto;
+}
+
+.vp-doc pre code {
+  @apply bg-transparent p-0;
+} 

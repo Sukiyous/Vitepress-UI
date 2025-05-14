@@ -1,0 +1,32 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 内容组织与Markdown文件
+
+VitePress项目的内容以Markdown文件组织，位于`vitepress-project/docs/`目录下。
+
+## 内容结构
+
+- `docs/index.md` - 首页，使用`layout: home`前端元数据，通过自定义Vue组件显示内容
+- `docs/introduction/` - 介绍文档目录
+  - `index.md` - "什么是VitePress"页面
+  - `getting-started.md` - 快速开始指南
+- `docs/writing/` - 编写指南目录
+  - `markdown.md` - Markdown语法说明
+  - `asset-handling.md` - 资源处理指南
+- `docs/public/` - 静态资源目录
+  - `logo.svg` - 站点logo文件
+
+## Markdown文件特性
+
+VitePress Markdown文件支持：
+- 前端元数据（frontmatter）
+- 代码块语法高亮
+- 行号和行高亮
+- 组件导入和使用
+- 自定义容器
+
+修改内容时，只需编辑相应的Markdown文件，无需修改Vue组件。这是使用VitePress的主要优势。
+
