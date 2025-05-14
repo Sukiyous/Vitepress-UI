@@ -12,10 +12,41 @@
       </template>
       <template v-else>
         <div class="flex flex-col md:flex-row flex-1 w-full">
-          <Sidebar />
-          <main class="flex-1 overflow-auto pb-20 md:pb-0">
+          <!-- 移动端切换侧边栏按钮 -->
+          <div class="md:hidden fixed bottom-4 right-4 z-40">
+            <button 
+              @click="toggleSidebar" 
+              class="p-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg touch-manipulation"
+              aria-label="切换侧边栏"
+            >
+              <Icon :icon="sidebarOpen ? 'lucide:x' : 'lucide:menu'" class="h-6 w-6" />
+            </button>
+          </div>
+          
+          <!-- 侧边栏，在移动端可以滑动显示 -->
+          <div 
+            :class="[
+              'transition-transform duration-300 ease-in-out',
+              'md:transition-none md:transform-none',
+              'fixed md:static md:h-auto z-30 md:z-auto',
+              'w-4/5 md:w-64 h-[calc(100vh-4rem)]',
+              'top-16 left-0 bottom-0',
+              sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+            ]"
+          >
+            <Sidebar />
+          </div>
+          
+          <!-- 侧边栏遮罩层 -->
+          <div 
+            v-if="sidebarOpen" 
+            class="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden" 
+            @click="closeSidebar"
+          ></div>
+          
+          <main class="flex-1 overflow-auto pb-24 md:pb-0 w-full">
             <!-- 文档内容 -->
-            <div class="markdown-content p-6 md:p-8 lg:p-10 mx-auto max-w-4xl">
+            <div class="markdown-content p-4 md:p-6 lg:p-8 mx-auto max-w-4xl">
               <Content />
             </div>
           </main>
@@ -26,8 +57,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useData } from 'vitepress'
+import { Icon } from '@iconify/vue'
 import Header from './components/Header.vue'
 import Hero from './components/Hero.vue'
 import Features from './components/Features.vue'
@@ -39,6 +71,61 @@ const { frontmatter } = useData()
 const isHomePage = computed(() => {
   return frontmatter.value.layout === 'home' || route.path === '/'
 })
+
+const sidebarOpen = ref(false)
+
+// 切换侧边栏
+const toggleSidebar = () => {
+  sidebarOpen.value = !sidebarOpen.value
+  
+  // 当打开侧边栏时，禁止背景滚动
+  if (sidebarOpen.value) {
+    document.body.classList.add('overflow-hidden')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+  }
+}
+
+// 关闭侧边栏
+const closeSidebar = () => {
+  sidebarOpen.value = false
+  document.body.classList.remove('overflow-hidden')
+}
+
+// 监视路由变化关闭侧边栏
+watch(() => route.path, () => {
+  sidebarOpen.value = false
+  document.body.classList.remove('overflow-hidden')
+})
+
+// 监听窗口尺寸变化
+const handleResize = () => {
+  if (window.innerWidth >= 768 && sidebarOpen.value) {
+    sidebarOpen.value = false
+    document.body.classList.remove('overflow-hidden')
+  }
+}
+
+// 监听ESC键关闭侧边栏
+const handleEscKey = (e) => {
+  if (e.key === 'Escape' && sidebarOpen.value) {
+    sidebarOpen.value = false
+    document.body.classList.remove('overflow-hidden')
+  }
+}
+
+// 挂载事件监听
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', handleResize)
+  window.addEventListener('keydown', handleEscKey)
+  
+  // 卸载事件监听
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('keydown', handleEscKey)
+    document.body.classList.remove('overflow-hidden')
+  })
+}
 </script>
 
 <style>
@@ -55,7 +142,7 @@ const isHomePage = computed(() => {
 
 /* 确保标题样式 */
 .markdown-content :deep(h1) {
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 1.5rem;
@@ -63,19 +150,33 @@ const isHomePage = computed(() => {
   color: #111827;
 }
 
+@media (min-width: 768px) {
+  .markdown-content :deep(h1) {
+    font-size: 2.25rem;
+  }
+}
+
 .dark .markdown-content :deep(h1) {
   color: #f9fafb;
 }
 
 .markdown-content :deep(h2) {
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-top: 2.5rem;
-  margin-bottom: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #e5e7eb;
   line-height: 1.3;
   color: #111827;
+}
+
+@media (min-width: 768px) {
+  .markdown-content :deep(h2) {
+    font-size: 1.875rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
 }
 
 .dark .markdown-content :deep(h2) {
@@ -84,12 +185,20 @@ const isHomePage = computed(() => {
 }
 
 .markdown-content :deep(h3) {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
   line-height: 1.4;
   color: #111827;
+}
+
+@media (min-width: 768px) {
+  .markdown-content :deep(h3) {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .dark .markdown-content :deep(h3) {
@@ -98,14 +207,28 @@ const isHomePage = computed(() => {
 
 /* 确保段落和列表的间距 */
 .markdown-content :deep(p) {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
   line-height: 1.7;
+}
+
+@media (min-width: 768px) {
+  .markdown-content :deep(p) {
+    margin-bottom: 1.25rem;
+  }
 }
 
 .markdown-content :deep(ul),
 .markdown-content :deep(ol) {
-  margin-bottom: 1.25rem;
-  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content :deep(ul),
+  .markdown-content :deep(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
 }
 
 .markdown-content :deep(li) {
@@ -115,10 +238,17 @@ const isHomePage = computed(() => {
 /* 美化代码块 */
 .markdown-content :deep(pre) {
   border-radius: 0.375rem;
-  margin: 1.5rem 0;
-  padding: 1rem;
+  margin: 1.25rem 0;
+  padding: 0.75rem;
   background-color: #f3f4f6;
   overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .markdown-content :deep(pre) {
+    margin: 1.5rem 0;
+    padding: 1rem;
+  }
 }
 
 .dark .markdown-content :deep(pre) {
@@ -149,16 +279,29 @@ const isHomePage = computed(() => {
 .markdown-content :deep(table) {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
   overflow-x: auto;
   display: block;
+}
+
+@media (min-width: 768px) {
+  .markdown-content :deep(table) {
+    margin: 1.5rem 0;
+  }
 }
 
 .markdown-content :deep(table th),
 .markdown-content :deep(table td) {
   border: 1px solid #e5e7eb;
-  padding: 0.75rem;
+  padding: 0.5rem;
   text-align: left;
+}
+
+@media (min-width: 768px) {
+  .markdown-content :deep(table th),
+  .markdown-content :deep(table td) {
+    padding: 0.75rem;
+  }
 }
 
 .dark .markdown-content :deep(table th),
@@ -194,10 +337,23 @@ const isHomePage = computed(() => {
 .markdown-content :deep(hr) {
   border: 0;
   border-top: 1px solid #e5e7eb;
-  margin: 2rem 0;
+  margin: 1.5rem 0;
 }
 
 .dark .markdown-content :deep(hr) {
   border-top-color: #374151;
+}
+
+/* 添加触摸友好样式 */
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* 移动端图片缩放到适合屏幕 */
+@media (max-width: 767px) {
+  .markdown-content :deep(img) {
+    max-width: 100%;
+    height: auto;
+  }
 }
 </style> 

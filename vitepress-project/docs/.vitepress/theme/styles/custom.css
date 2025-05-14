@@ -2,6 +2,10 @@
   --vp-c-brand: #646cff;
   --vp-c-brand-light: #747bff;
   --vp-c-brand-dark: #5460fe;
+  
+  /* 移动端优化变量 */
+  --vp-mobile-navbar-height: 4rem;
+  --vp-mobile-sidebar-width: 80%;
 }
 
 /* 暗色模式 */
@@ -53,9 +57,21 @@
   padding: 64px 24px;
 }
 
+@media (max-width: 767px) {
+  .home-container {
+    padding: 32px 16px;
+  }
+}
+
 .hero-section {
   text-align: center;
   margin-bottom: 64px;
+}
+
+@media (max-width: 767px) {
+  .hero-section {
+    margin-bottom: 32px;
+  }
 }
 
 .features-section {
@@ -64,10 +80,23 @@
   gap: 24px;
 }
 
+@media (max-width: 767px) {
+  .features-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 .feature-card {
   padding: 24px;
   background-color: var(--vp-c-bg-soft);
   border-radius: 8px;
+}
+
+@media (max-width: 767px) {
+  .feature-card {
+    padding: 16px;
+  }
 }
 
 /* 自定义样式覆盖 */
@@ -78,8 +107,6 @@
 .VPNavBar .container {
   @apply max-w-none mx-0 px-0;
 }
-
-/* 其他自定义样式可以根据需要继续添加 */
 
 /* 在TailwindCSS和VitePress样式之间建立兼容性 */
 .vp-doc [class~="lead"] {
@@ -151,6 +178,58 @@
 .VPHero .image {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* 移动端优化样式 */
+@media (max-width: 767px) {
+  /* 触摸友好的链接和按钮 */
+  a, button {
+    touch-action: manipulation;
+  }
+  
+  /* 适当增加点击区域 */
+  .vp-doc a, 
+  .vp-doc button,
+  nav a,
+  nav button {
+    padding: 0.25rem 0;
+  }
+  
+  /* 确保输入框有足够的点击区域 */
+  input, 
+  select, 
+  textarea {
+    font-size: 16px !important; /* 防止iOS缩放 */
+    min-height: 44px;
+  }
+  
+  /* 优化移动端滚动体验 */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* 优化移动端图片 */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* 增强表格在移动端的可读性 */
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* 避免内容被iOS底部工具栏遮挡 */
+@supports (padding: max(0px)) {
+  body {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+  
+  .fixed-bottom {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
 }
 
 /* 其他自定义样式覆盖 */ 
