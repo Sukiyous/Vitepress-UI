@@ -45,6 +45,7 @@ export default {
           text: '介绍',
           items: [
             { text: '什么是VitePress', link: '/introduction/' },
+            { text: '为什么选择VitePress', link: '/introduction/why-vitepress' },
             { text: '快速开始', link: '/introduction/getting-started' },
           ]
         }
