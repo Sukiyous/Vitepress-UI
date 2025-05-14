@@ -122,7 +122,38 @@ export default {
     }
   },
   head: [
-    ['link', { rel: 'icon', href: '/logo.svg' }]
+    ['link', { rel: 'icon', href: '/logo.svg' }],
+    // 优化移动端视口设置
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover' }],
+    // 添加适配iPhone的meta标签
+    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }],
+    // 添加主题色
+    ['meta', { name: 'theme-color', content: '#646cff' }],
+    // 避免内容被iOS底部工具栏遮挡
+    ['style', {}, `
+      @supports (padding: max(0px)) {
+        body {
+          padding-bottom: max(0px, env(safe-area-inset-bottom));
+        }
+        .fixed-bottom {
+          padding-bottom: max(0px, env(safe-area-inset-bottom));
+        }
+      }
+      /* 增加移动端内容间距 */
+      @media (max-width: 767px) {
+        .content {
+          padding-left: 1.5rem !important;
+          padding-right: 1.5rem !important;
+        }
+        .content > * {
+          margin-bottom: 1.5rem;
+        }
+        .content p, .content ul, .content ol {
+          line-height: 1.8;
+        }
+      }
+    `]
   ],
   appearance: true,
   lastUpdated: false

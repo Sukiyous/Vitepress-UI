@@ -13,10 +13,10 @@
       <template v-else>
         <div class="flex flex-col md:flex-row flex-1 w-full">
           <!-- 移动端切换侧边栏按钮 -->
-          <div class="md:hidden fixed bottom-4 right-4 z-40">
+          <div class="md:hidden fixed bottom-6 right-6 z-40">
             <button 
               @click="toggleSidebar" 
-              class="p-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg touch-manipulation"
+              class="p-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg touch-manipulation"
               aria-label="切换侧边栏"
             >
               <Icon :icon="sidebarOpen ? 'lucide:x' : 'lucide:menu'" class="h-6 w-6" />
@@ -44,9 +44,9 @@
             @click="closeSidebar"
           ></div>
           
-          <main class="flex-1 overflow-auto pb-24 md:pb-0 w-full">
+          <main class="flex-1 overflow-auto pb-28 md:pb-0 w-full">
             <!-- 文档内容 -->
-            <div class="markdown-content p-4 md:p-6 lg:p-8 mx-auto max-w-4xl">
+            <div class="markdown-content p-5 md:p-6 lg:p-8 mx-auto max-w-4xl">
               <Content />
             </div>
           </main>
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import { useRoute, useData } from 'vitepress'
 import { Icon } from '@iconify/vue'
 import Header from './components/Header.vue'
@@ -354,6 +354,30 @@ if (typeof window !== 'undefined') {
   .markdown-content :deep(img) {
     max-width: 100%;
     height: auto;
+  }
+  
+  /* 在移动端优化内容间距 */
+  .markdown-content :deep(p),
+  .markdown-content :deep(ul),
+  .markdown-content :deep(ol),
+  .markdown-content :deep(blockquote),
+  .markdown-content :deep(pre),
+  .markdown-content :deep(table) {
+    margin-bottom: 1.75rem;
+  }
+  
+  .markdown-content :deep(h1) {
+    margin-bottom: 2rem;
+  }
+  
+  .markdown-content :deep(h2) {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .markdown-content :deep(h3) {
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
   }
 }
 </style> 
