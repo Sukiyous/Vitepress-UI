@@ -1,42 +1,24 @@
-name: Deploy VitePress to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# 设置GITHUB_TOKEN的权限
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# 允许一个并发部署
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  # 构建工作
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: './vitepress-project/package-lock.json'
+          node-version: 16
       
-      - name: List Project Structure
-        run: |
-          echo "Project structure:"
-          ls -la
-          echo "VitePress project structure:"
-          ls -la vitepress-project
+      - name: Debug - List files
+        run: ls -la
       
       - name: Install Dependencies
         run: |
@@ -48,24 +30,8 @@ jobs:
           cd vitepress-project
           npm run docs:build
       
-      - name: Check Build Output
-        run: |
-          echo "Checking build output..."
-          ls -la vitepress-project/docs/.vitepress/dist
-      
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: vitepress-project/docs/.vitepress/dist
-
-  # 部署工作
-  deploy:
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./vitepress-project/docs/.vitepress/dist 
