@@ -15,6 +15,15 @@ export default {
       detailsLabel: '详细信息'
     }
   },
+  // 添加Vite配置
+  vite: {
+    // 引用项目根目录下的vite.config.js
+    configFile: '../vite.config.js',
+    // 确保在开发和构建时都应用polyfill
+    ssr: {
+      noExternal: ['crypto-browserify', 'buffer', 'stream-browserify']
+    }
+  },
   themeConfig: {
     logo: {
       src: '/logo.svg',
