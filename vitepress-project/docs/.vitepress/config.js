@@ -123,15 +123,23 @@ export default {
   },
   head: [
     ['link', { rel: 'icon', href: '/logo.svg' }],
-    // 优化移动端视口设置
-    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover' }],
+    // 修改移动端视口设置，允许用户缩放
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' }],
     // 添加适配iPhone的meta标签
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }],
     // 添加主题色
     ['meta', { name: 'theme-color', content: '#646cff' }],
-    // 避免内容被iOS底部工具栏遮挡
+    // 移动端布局样式优化
     ['style', {}, `
+      /* 确保内容占满屏幕 */
+      html, body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      
+      /* 避免内容被iOS底部工具栏遮挡 */
       @supports (padding: max(0px)) {
         body {
           padding-bottom: max(0px, env(safe-area-inset-bottom));
@@ -140,17 +148,39 @@ export default {
           padding-bottom: max(0px, env(safe-area-inset-bottom));
         }
       }
-      /* 增加移动端内容间距 */
+      
+      /* 优化移动端内容布局 */
       @media (max-width: 767px) {
-        .content {
-          padding-left: 1.5rem !important;
-          padding-right: 1.5rem !important;
+        .VPDoc .content {
+          padding-left: 0.75rem !important;
+          padding-right: 0.75rem !important;
         }
+        
+        .markdown-content {
+          width: 100% !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          padding-left: 0.75rem !important;
+          padding-right: 0.75rem !important;
+        }
+        
         .content > * {
-          margin-bottom: 1.5rem;
+          max-width: 100%;
+          margin-bottom: 1.25rem;
         }
+        
+        /* 合理的行间距 */
         .content p, .content ul, .content ol {
-          line-height: 1.8;
+          line-height: 1.6;
+        }
+        
+        /* 表格样式优化 */
+        table {
+          display: block;
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: auto;
         }
       }
     `]

@@ -46,7 +46,7 @@
           
           <main class="flex-1 overflow-auto pb-28 md:pb-0 w-full">
             <!-- 文档内容 -->
-            <div class="markdown-content p-5 md:p-6 lg:p-8 mx-auto max-w-4xl">
+            <div class="markdown-content mx-auto py-4 px-3 md:p-6 lg:p-8 max-w-full md:max-w-4xl">
               <Content />
             </div>
           </main>
@@ -132,27 +132,32 @@ if (typeof window !== 'undefined') {
 /* 保证内容区域样式正确 */
 .markdown-content {
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* 重置可能的默认边距 */
 .markdown-content :deep(*) {
   margin-top: revert;
   margin-bottom: revert;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* 确保标题样式 */
 .markdown-content :deep(h1) {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
   margin-top: 0;
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
+  margin-bottom: 1.25rem;
+  line-height: 1.3;
   color: #111827;
 }
 
 @media (min-width: 768px) {
   .markdown-content :deep(h1) {
     font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
   }
 }
 
@@ -163,7 +168,7 @@ if (typeof window !== 'undefined') {
 .markdown-content :deep(h2) {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-top: 2rem;
+  margin-top: 1.75rem;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #e5e7eb;
@@ -208,12 +213,13 @@ if (typeof window !== 'undefined') {
 /* 确保段落和列表的间距 */
 .markdown-content :deep(p) {
   margin-bottom: 1rem;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 @media (min-width: 768px) {
   .markdown-content :deep(p) {
     margin-bottom: 1.25rem;
+    line-height: 1.7;
   }
 }
 
@@ -238,10 +244,12 @@ if (typeof window !== 'undefined') {
 /* 美化代码块 */
 .markdown-content :deep(pre) {
   border-radius: 0.375rem;
-  margin: 1.25rem 0;
+  margin: 1rem 0;
   padding: 0.75rem;
   background-color: #f3f4f6;
   overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
@@ -282,6 +290,7 @@ if (typeof window !== 'undefined') {
   margin: 1.25rem 0;
   overflow-x: auto;
   display: block;
+  max-width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -356,28 +365,46 @@ if (typeof window !== 'undefined') {
     height: auto;
   }
   
-  /* 在移动端优化内容间距 */
+  /* 移动端内容布局优化 */
+  .markdown-content {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* 移动端内容间距优化 */
   .markdown-content :deep(p),
   .markdown-content :deep(ul),
   .markdown-content :deep(ol),
-  .markdown-content :deep(blockquote),
-  .markdown-content :deep(pre),
-  .markdown-content :deep(table) {
-    margin-bottom: 1.75rem;
+  .markdown-content :deep(blockquote) {
+    margin-bottom: 1.25rem;
   }
   
   .markdown-content :deep(h1) {
-    margin-bottom: 2rem;
-  }
-  
-  .markdown-content :deep(h2) {
-    margin-top: 2.5rem;
     margin-bottom: 1.5rem;
   }
   
-  .markdown-content :deep(h3) {
+  .markdown-content :deep(h2) {
     margin-top: 2rem;
     margin-bottom: 1.25rem;
+  }
+  
+  .markdown-content :deep(h3) {
+    margin-top: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* 确保内容不超出视口 */
+  .markdown-content :deep(pre),
+  .markdown-content :deep(code),
+  .markdown-content :deep(table),
+  .markdown-content :deep(blockquote) {
+    max-width: 100%;
+    word-break: break-word;
+  }
+  
+  /* 小屏幕下的代码块处理 */
+  .markdown-content :deep(pre) {
+    white-space: pre-wrap;
   }
 }
 </style> 
