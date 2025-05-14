@@ -1,6 +1,32 @@
-# VitePress UI项目
+# VitePress-UI
 
-这是一个基于VitePress的文档站点项目，使用TailwindCSS进行样式设计。该项目完全基于VitePress实现，保持了优雅的视觉风格，同时获得了VitePress的内容管理优势。
+VitePress 文档模板，包含完整的界面风格和组件库。
+
+## 部署状态
+
+此项目使用GitHub Actions自动部署至GitHub Pages。
+
+最后更新时间: 2023-10-10
+
+## 功能特点
+
+- 响应式设计
+- 夜间模式支持
+- Markdown增强
+- 完整文档结构
+
+## 开发指南
+
+```bash
+# 安装依赖
+npm install
+
+# 本地开发
+npm run dev
+
+# 构建项目
+npm run build
+```
 
 ## 项目结构
 
@@ -17,42 +43,6 @@ vitepress-project/         # VitePress项目目录
 │   ├── reference/         # API参考文档
 │   └── public/            # 公共资源
 └── package.json           # 项目依赖
-```
-
-## 功能特性
-
-- 美观的UI设计，基于TailwindCSS实现
-- 基于Markdown的内容管理
-- 支持明亮/暗黑主题切换
-- 响应式布局，适配各种设备尺寸
-- 自定义组件和样式
-- 文档目录结构清晰，易于扩展
-
-## 快速开始
-
-安装依赖:
-
-```bash
-cd vitepress-project
-npm install
-```
-
-启动开发服务器:
-
-```bash
-npm run docs:dev
-```
-
-构建项目:
-
-```bash
-npm run docs:build
-```
-
-预览构建结果:
-
-```bash
-npm run docs:preview
 ```
 
 ## 技术栈
