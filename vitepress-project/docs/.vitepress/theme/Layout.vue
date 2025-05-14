@@ -46,7 +46,7 @@
           
           <main class="flex-1 overflow-auto pb-28 md:pb-0 w-full md:max-w-[calc(100%-16rem)]">
             <!-- 文档内容 -->
-            <div class="markdown-content w-full mx-auto py-4 px-3 md:p-6 lg:p-8 md:max-w-4xl">
+            <div class="markdown-content w-full mx-auto py-4 px-4 md:p-6 lg:p-8 md:max-w-4xl">
               <Content />
             </div>
             
@@ -381,9 +381,9 @@ if (typeof window !== 'undefined') {
 
 /* 美化代码块 */
 .markdown-content :deep(pre) {
-  border-radius: 0.375rem;
-  margin: 1rem 0;
-  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin: 1.25rem 0;
+  padding: 1rem;
   background-color: #f3f4f6;
   overflow-x: auto;
   width: 100%;
@@ -393,7 +393,7 @@ if (typeof window !== 'undefined') {
 @media (min-width: 768px) {
   .markdown-content :deep(pre) {
     margin: 1.5rem 0;
-    padding: 1rem;
+    padding: 1.25rem;
   }
 }
 
@@ -403,7 +403,8 @@ if (typeof window !== 'undefined') {
 
 .markdown-content :deep(code) {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 /* 美化引用块 */
@@ -544,7 +545,23 @@ if (typeof window !== 'undefined') {
   
   /* 小屏幕下的代码块处理 */
   .markdown-content :deep(pre) {
-    white-space: pre-wrap;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  .markdown-content :deep(pre code) {
+    white-space: pre;
+    word-break: normal;
+    overflow-x: auto;
+  }
+  
+  /* 代码块中的行号 */
+  .markdown-content :deep(.line-numbers-wrapper) {
+    display: none;
   }
 }
 
