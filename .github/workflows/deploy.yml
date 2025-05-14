@@ -13,22 +13,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
       
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: 14
+      
+      - name: Debug Info
+        run: |
+          echo "Node version:"
+          node -v
+          echo "NPM version:"
+          npm -v
+          echo "Directory structure:"
+          ls -la
+          echo "VitePress project structure:"
+          ls -la vitepress-project
       
       - name: Install and Build 🔧
         run: |
           cd vitepress-project
           npm ci
           npm run docs:build
+          echo "Build output:"
+          ls -la docs/.vitepress/dist
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages
-          folder: vitepress-project/docs/.vitepress/dist
-          clean: true 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./vitepress-project/docs/.vitepress/dist 
