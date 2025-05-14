@@ -8,6 +8,8 @@ hero:
   image:
     src: /logo.svg
     alt: VitePress
+    width: 300
+    height: 300
   actions:
     - theme: brand
       text: 快速开始

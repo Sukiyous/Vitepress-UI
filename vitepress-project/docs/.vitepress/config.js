@@ -103,5 +103,5 @@ export default {
     ['link', { rel: 'icon', href: '/logo.svg' }]
   ],
   appearance: true,
-  lastUpdated: true
+  lastUpdated: false
 } 

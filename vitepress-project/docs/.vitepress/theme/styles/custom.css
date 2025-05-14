@@ -136,4 +136,21 @@
 
 .vp-doc pre code {
   @apply bg-transparent p-0;
-} 
+}
+
+/* 自定义首页Hero图片尺寸 */
+.VPHero .image-bg {
+  transform: scale(1.5); /* 将图片放大1.5倍 */
+}
+
+.VPHero .image-container {
+  width: 300px !important;
+  height: 300px !important;
+}
+
+.VPHero .image {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 其他自定义样式覆盖 */ 
