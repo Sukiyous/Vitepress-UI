@@ -7,7 +7,7 @@
   --vp-mobile-navbar-height: 4rem;
   --vp-mobile-sidebar-width: 80%;
   --vp-content-padding: 1rem;
-  --vp-mobile-content-padding: 1.25rem;
+  --vp-mobile-content-padding: 0.75rem;
 }
 
 /* 暗色模式 */
@@ -232,6 +232,8 @@
   table {
     display: block;
     overflow-x: auto;
+    width: 100% !important;
+    box-sizing: border-box;
   }
   
   /* 提高内容间距，减少拥挤感 */
@@ -239,19 +241,52 @@
   .markdown-content ul,
   .markdown-content ol,
   .markdown-content blockquote {
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
   }
   
-  /* 增加内容的外边距 */
-  .markdown-content > * {
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
+  /* 针对移动端减少内容的外边距，增加可用空间 */
+  .markdown-content {
+    padding-left: var(--vp-mobile-content-padding) !important;
+    padding-right: var(--vp-mobile-content-padding) !important;
+    width: 100vw !important;
+    max-width: none !important;
+    box-sizing: border-box;
   }
   
   /* 增加分段内容之间的间距 */
   section {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  /* 确保代码块在移动端正确显示 */
+  .markdown-content :deep(pre) {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    width: calc(100% + 0.5rem);
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  /* 改善移动端滚动条外观 */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -280,7 +315,7 @@
   
   /* 更宽松的段落行高 */
   p {
-    line-height: 1.8;
+    line-height: 1.7;
   }
   
   /* 增加内容之间的垂直间距 */
@@ -296,6 +331,21 @@
   section {
     max-width: 100vw;
     overflow-x: hidden;
+  }
+  
+  /* 移动端内容占满屏幕宽度 */
+  .content-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  /* 移动端下Hero和Features组件适配 */
+  .hero-section, 
+  .features-section {
+    width: 100vw;
+    padding-left: var(--vp-mobile-content-padding);
+    padding-right: var(--vp-mobile-content-padding);
+    box-sizing: border-box;
   }
 }
 

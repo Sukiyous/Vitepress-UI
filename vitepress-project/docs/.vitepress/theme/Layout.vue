@@ -5,7 +5,7 @@
     <div class="pt-16">
       <!-- 根据路由条件显示不同内容 -->
       <template v-if="isHomePage">
-        <main>
+        <main class="w-full">
           <Hero />
           <Features />
         </main>
@@ -44,10 +44,55 @@
             @click="closeSidebar"
           ></div>
           
-          <main class="flex-1 overflow-auto pb-28 md:pb-0 w-full">
+          <main class="flex-1 overflow-auto pb-28 md:pb-0 w-full md:max-w-[calc(100%-16rem)]">
             <!-- 文档内容 -->
-            <div class="markdown-content mx-auto py-4 px-3 md:p-6 lg:p-8 max-w-full md:max-w-4xl">
+            <div class="markdown-content w-full mx-auto py-4 px-3 md:p-6 lg:p-8 md:max-w-4xl">
               <Content />
+            </div>
+            
+            <!-- 优化移动端下的本页目录 -->
+            <div 
+              v-if="showOutline && frontmatter.outline !== false" 
+              class="md:hidden fixed bottom-6 left-6 z-40"
+            >
+              <button 
+                @click="toggleOutline" 
+                class="p-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg touch-manipulation active:scale-95 transition-transform"
+                aria-label="本页目录"
+              >
+                <Icon icon="lucide:list" class="h-5 w-5" />
+              </button>
+              
+              <!-- 移动端下的页面目录弹出层 -->
+              <Transition name="fade">
+                <div 
+                  v-if="outlineOpen" 
+                  class="fixed inset-x-3 bottom-20 p-4 bg-white dark:bg-zinc-800 rounded-lg shadow-lg z-50 max-h-[60vh] overflow-y-auto overscroll-contain"
+                >
+                  <div class="flex justify-between items-center mb-3 pb-2 border-b border-gray-100 dark:border-zinc-700">
+                    <h3 class="text-lg font-bold">本页目录</h3>
+                    <button @click="toggleOutline" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700">
+                      <Icon icon="lucide:x" class="h-5 w-5" />
+                    </button>
+                  </div>
+                  <div class="pl-1 text-sm">
+                    <div v-for="heading in outline" :key="heading.id" class="my-1">
+                      <a 
+                        :href="`#${heading.id}`" 
+                        :class="{
+                          'block py-2 px-3 rounded-md transition-colors': true,
+                          'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium': activeHeading === heading.id,
+                          'hover:bg-gray-50 dark:hover:bg-zinc-700/50': activeHeading !== heading.id,
+                          'pl-7': heading.level === 3
+                        }"
+                        @click="closeMobileOutline"
+                      >
+                        {{ heading.text }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </Transition>
             </div>
           </main>
         </div>
@@ -57,7 +102,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, onBeforeUnmount, onMounted } from 'vue'
 import { useRoute, useData } from 'vitepress'
 import { Icon } from '@iconify/vue'
 import Header from './components/Header.vue'
@@ -66,13 +111,25 @@ import Features from './components/Features.vue'
 import Sidebar from './components/Sidebar.vue'
 
 const route = useRoute()
-const { frontmatter } = useData()
+const { frontmatter, page } = useData()
 
 const isHomePage = computed(() => {
   return frontmatter.value.layout === 'home' || route.path === '/'
 })
 
 const sidebarOpen = ref(false)
+const outlineOpen = ref(false)
+const activeHeading = ref('')
+
+// 获取页面大纲
+const outline = computed(() => {
+  return page.value.headers || []
+})
+
+// 判断是否显示大纲
+const showOutline = computed(() => {
+  return outline.value.length > 0
+})
 
 // 切换侧边栏
 const toggleSidebar = () => {
@@ -86,6 +143,33 @@ const toggleSidebar = () => {
   }
 }
 
+// 切换大纲显示
+const toggleOutline = () => {
+  outlineOpen.value = !outlineOpen.value
+  
+  if (outlineOpen.value) {
+    outlineOpen.value = true
+  }
+}
+
+// 关闭移动端大纲
+const closeMobileOutline = () => {
+  outlineOpen.value = false
+  
+  // 添加一个小延迟以确保目录关闭后再导航
+  setTimeout(() => {
+    // 关闭后自动滚动到锚点位置
+    const hash = window.location.hash
+    if (hash) {
+      const element = document.getElementById(hash.slice(1))
+      if (element) {
+        // 使用scrollIntoView带来更好的滚动体验
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+  }, 100)
+}
+
 // 关闭侧边栏
 const closeSidebar = () => {
   sidebarOpen.value = false
@@ -95,22 +179,75 @@ const closeSidebar = () => {
 // 监视路由变化关闭侧边栏
 watch(() => route.path, () => {
   sidebarOpen.value = false
+  outlineOpen.value = false
   document.body.classList.remove('overflow-hidden')
 })
 
 // 监听窗口尺寸变化
 const handleResize = () => {
-  if (window.innerWidth >= 768 && sidebarOpen.value) {
-    sidebarOpen.value = false
-    document.body.classList.remove('overflow-hidden')
+  if (window.innerWidth >= 768) {
+    if (sidebarOpen.value) {
+      sidebarOpen.value = false
+      document.body.classList.remove('overflow-hidden')
+    }
+    if (outlineOpen.value) {
+      outlineOpen.value = false
+    }
   }
 }
 
-// 监听ESC键关闭侧边栏
+// 监听滚动，更新当前活动标题
+const updateActiveHeading = () => {
+  if (typeof document === 'undefined') return
+
+  const headings = document.querySelectorAll('h2, h3')
+  if (headings.length === 0) return
+
+  const scrollY = window.scrollY
+  const pageBottom = scrollY + window.innerHeight
+  const pageTop = scrollY + 100
+
+  // 找到当前可见的标题
+  let currentId = ''
+  // 记录最小距离和对应ID
+  let minDistance = Infinity
+  
+  for (const heading of headings) {
+    const { top } = heading.getBoundingClientRect()
+    const id = heading.id
+    
+    // 计算距离
+    const distance = Math.abs(top - 100)  // 距离顶部100px处
+    
+    // 如果这个标题比之前找到的更接近顶部可视区域
+    if (distance < minDistance) {
+      minDistance = distance
+      currentId = id
+    }
+  }
+
+  activeHeading.value = currentId
+}
+
+// 挂载事件监听
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('scroll', updateActiveHeading)
+    updateActiveHeading()
+  }
+})
+
+// 监听ESC键关闭侧边栏和目录
 const handleEscKey = (e) => {
-  if (e.key === 'Escape' && sidebarOpen.value) {
-    sidebarOpen.value = false
-    document.body.classList.remove('overflow-hidden')
+  if (e.key === 'Escape') {
+    if (sidebarOpen.value) {
+      sidebarOpen.value = false
+      document.body.classList.remove('overflow-hidden')
+    }
+    if (outlineOpen.value) {
+      outlineOpen.value = false
+    }
   }
 }
 
@@ -123,6 +260,7 @@ if (typeof window !== 'undefined') {
   onBeforeUnmount(() => {
     window.removeEventListener('resize', handleResize)
     window.removeEventListener('keydown', handleEscKey)
+    window.removeEventListener('scroll', updateActiveHeading)
     document.body.classList.remove('overflow-hidden')
   })
 }
@@ -360,18 +498,20 @@ if (typeof window !== 'undefined') {
 
 /* 移动端图片缩放到适合屏幕 */
 @media (max-width: 767px) {
+  /* 确保内容占满屏幕宽度 */
+  .markdown-content {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    width: 100vw !important;
+    max-width: none !important;
+  }
+  
   .markdown-content :deep(img) {
     max-width: 100%;
     height: auto;
   }
   
-  /* 移动端内容布局优化 */
-  .markdown-content {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
-  }
-  
-  /* 移动端内容间距优化 */
+  /* 调整内容间距 */
   .markdown-content :deep(p),
   .markdown-content :deep(ul),
   .markdown-content :deep(ol),
@@ -406,5 +546,17 @@ if (typeof window !== 'undefined') {
   .markdown-content :deep(pre) {
     white-space: pre-wrap;
   }
+}
+
+/* 淡入淡出过渡效果 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 </style> 
