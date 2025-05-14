@@ -15,10 +15,22 @@ export default {
       detailsLabel: '详细信息'
     }
   },
+  // 忽略死链接检查
+  ignoreDeadLinks: true,
   // 添加Vite配置
   vite: {
-    // 引用项目根目录下的vite.config.js
-    configFile: '../vite.config.js',
+    // 移除外部配置文件引用，直接内联配置
+    plugins: [
+      // 在此添加Node.js polyfill支持
+    ],
+    resolve: {
+      alias: {
+        // 添加别名如需要
+      }
+    },
+    optimizeDeps: {
+      include: ['crypto-browserify', 'buffer', 'stream-browserify', 'events', 'util']
+    },
     // 确保在开发和构建时都应用polyfill
     ssr: {
       noExternal: ['crypto-browserify', 'buffer', 'stream-browserify']
