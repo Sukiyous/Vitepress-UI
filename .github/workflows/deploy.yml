@@ -21,16 +21,16 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'vitepress-project/package.json'
       
-      - name: 安装依赖并构建
-        env:
-          NODE_ENV: production
+      - name: 安装依赖
         run: |
           cd vitepress-project
           npm ci
           echo "Node版本: $(node -v)"
           echo "NPM版本: $(npm -v)"
-          # 确保安装所有必要的polyfill依赖
-          npm install buffer crypto-browserify events stream-browserify util vite-plugin-node-polyfills
+      
+      - name: 构建
+        run: |
+          cd vitepress-project
           npm run docs:build
       
       - name: 部署到GitHub Pages
